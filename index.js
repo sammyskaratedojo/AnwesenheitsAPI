@@ -9,12 +9,12 @@ export default async function handler(req, res) {
     await client.connect();
   }
 
-  const db = client.db('meinedb');
-  const collection = db.collection('meinecollection');
+  const db = client.db('AnwesenheitDB');
+  const collection = db.collection('profiles');
 
   if (req.method === 'GET') {
-    const daten = await collection.find({}).toArray();
-    res.status(200).json(daten);
+    const data = await collection.find({}).toArray();
+    res.status(200).json(data);
   } else {
     res.status(405).end();
   }

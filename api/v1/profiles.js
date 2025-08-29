@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     await client.connect();
   }
   
+  console.log("req:", req.body.authPW, "const:", authPW)
   if (req.body.authPW !== authPW)
   {
     res.status(401).end()
@@ -27,5 +28,6 @@ export default async function handler(req, res) {
     res.status(405).end();
   }
 }
+
 
 

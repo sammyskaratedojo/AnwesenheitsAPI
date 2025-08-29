@@ -5,6 +5,7 @@ const authPW = process.env.AUTH_PW
 let client;
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
   if (!client) {
     client = new MongoClient(uri);
     await client.connect();
@@ -28,6 +29,7 @@ export default async function handler(req, res) {
     res.status(405).end();
   }
 }
+
 
 
 

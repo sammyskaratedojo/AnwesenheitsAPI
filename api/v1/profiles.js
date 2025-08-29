@@ -1,3 +1,5 @@
+import { MongoClient } from 'mongodb';
+
 const uri = process.env.DB_URI; // z.B. aus Vercel Environment Variables
 const authPW = process.env.AUTH_PW
 let client;
@@ -25,4 +27,5 @@ export default async function handler(req, res) {
     res.status(405).end();
   }
 }
+
 

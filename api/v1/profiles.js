@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   console.log("req:", req.body.authPW, "const:", authPW)
   if (req.body.authPW !== authPW)
   {
-    res.status(401).end()
+    res.status(401).json({req: req.body.authPW, const: authPW})
     return
   }
 
@@ -28,6 +28,7 @@ export default async function handler(req, res) {
     res.status(405).end();
   }
 }
+
 
 
 

@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.DB_URI;
+const authPW = process.env.AUTH_PW
 let client;
 let db;
 
@@ -37,3 +38,4 @@ function createSession(className, sessionDate, members)
     }
     newSessions.insertOne(newSession)
 }
+

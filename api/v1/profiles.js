@@ -21,13 +21,14 @@ export default async function handler(req, res) {
   const db = client.db('AnwesenheitDB');
   const profiles = db.collection('profiles');
 
-  if (req.method === 'GET') {
+  if (req.method === 'POST') {
     const allProfiles = await profiles.find({}).toArray();
     res.status(200).json(allProfiles);
   } else {
     res.status(405).end();
   }
 }
+
 
 
 

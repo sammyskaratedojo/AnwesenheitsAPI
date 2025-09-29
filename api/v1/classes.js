@@ -17,28 +17,32 @@ export default async function handler(req, res) {
 //   }
 
 
-  
+  const db = client.db('AnwesenheitDB');
+  const profiles = db.collection('profiles');
+
   if (req.method === 'GET') {
-    res.status(200).json({hi: getClasses()})
+    const allProfiles = await profiles.find({}).toArray()
+    res.status(200).json(allProfiles)
   } else {
-    res.status(405).end();
+    res.status(405).end()
   }
 }
 
 
-async function getClasses()
-{
-    const db = client.db('AnwesenheitDB');
-    const classes = db.collection('profiles');
-    let allClasses = await classes.find({}).toArray()
-    return allClasses
-    let res = []
-    allClasses.forEach(c => {
-        res.push(c.name)
-        console.log(c)
-        console.log(c.name + " !")
-    })
+// async function getClasses()
+// {
+//     const db = client.db('AnwesenheitDB');
+//     const classes = db.collection('profiles');
+//     let allClasses = await classes.find({}).toArray()
+//     return allClasses
+//     let res = []
+//     allClasses.forEach(c => {
+//         res.push(c.name)
+//         console.log(c)
+//         console.log(c.name + " !")
+//     })
 
-    return res
+//     return res
 
-}
+// }
+

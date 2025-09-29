@@ -32,12 +32,13 @@ function getClasses()
     const db = client.db('AnwesenheitDB');
     const classes = db.collection('classes');
     let allClasses = classes.find({}).toArray()
-    res = []
+    let res = []
     allClasses.forEach(c => {
         res.append(c.name)
     })
 
     return res
 }
+
 
 

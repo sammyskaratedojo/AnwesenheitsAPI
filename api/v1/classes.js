@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   
   if (req.method === 'GET') {
-    res.status(200).json(getClasses())
+    res.status(200).json({hi: getClasses()})
   } else {
     res.status(405).end();
   }

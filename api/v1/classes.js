@@ -17,19 +17,19 @@ export default async function handler(req, res) {
 //   }
 
 
+  
+
   const db = client.db('AnwesenheitDB');
   const profiles = db.collection('classes');
 
-   if (req.method === 'GET') {
+  if (req.method === 'GET') {
     const allClasses = await profiles.find({}).toArray()
-    let res = []
+    let result = []
     allClasses.forEach(c => {
-        res.push(c.name)
-        console.log(c)
-        console.log(c.name + " !")
+        result.push(c.name)
     })
 
-    res.status(200).json(res)
+    res.status(200).json(result)
   } else {
     res.status(405).end()
   }
@@ -52,6 +52,7 @@ export default async function handler(req, res) {
 //     return res
 
 // }
+
 
 
 

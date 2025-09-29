@@ -16,12 +16,7 @@ export default async function handler(req, res) {
     client = new MongoClient(uri);
     await client.connect();
   }
-  
-  // if (req.body.authPW !== authPW)
-  // {
-  //   res.status(401).json({test: req.body.authPW})
-  //   return
-  // }
+
 
 
   const db = client.db('AnwesenheitDB');
@@ -34,3 +29,4 @@ export default async function handler(req, res) {
     res.status(405).end()
   }
 }
+

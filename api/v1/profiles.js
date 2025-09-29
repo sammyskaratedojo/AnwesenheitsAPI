@@ -1,7 +1,6 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.DB_URI; // z.B. aus Vercel Environment Variables
-const authPW = process.env.AUTH_PW
 let client;
 
 export default async function handler(req, res) {
@@ -18,33 +17,20 @@ export default async function handler(req, res) {
     await client.connect();
   }
   
-  console.log("req:", req.body.authPW, "const:", authPW)
-  if (req.body.authPW !== authPW)
-  {
-    res.status(401).json({test: req.body.authPW})
-    return
-  }
+  // if (req.body.authPW !== authPW)
+  // {
+  //   res.status(401).json({test: req.body.authPW})
+  //   return
+  // }
 
 
   const db = client.db('AnwesenheitDB');
   const profiles = db.collection('profiles');
 
-  if (req.method === 'POST') {
-    const allProfiles = await profiles.find({}).toArray();
-    res.status(200).json(allProfiles);
+  if (req.method === 'GET') {
+    const allProfiles = await profiles.find({}).toArray()
+    res.status(200).json(allProfiles)
   } else {
-    res.status(405).end();
+    res.status(405).end()
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

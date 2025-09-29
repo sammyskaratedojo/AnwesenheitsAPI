@@ -43,6 +43,6 @@ export default async function handler(req, res) {
     }
     else
     {
-        res.status(200).send()
+        res.status(200).json("ok")
     }
 }

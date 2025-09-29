@@ -27,8 +27,11 @@ async function getClasses()
     let res = []
     allClasses.forEach(c => {
         res.push(c.name)
+        console.log(c)
+        console.log(c.name + " !")
     })
 
     return res
 
 }
+

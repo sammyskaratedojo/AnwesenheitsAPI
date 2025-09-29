@@ -31,6 +31,7 @@ async function getClasses()
     const db = client.db('AnwesenheitDB');
     const classes = db.collection('profiles');
     let allClasses = await classes.find({}).toArray()
+    return allClasses
     let res = []
     allClasses.forEach(c => {
         res.push(c.name)

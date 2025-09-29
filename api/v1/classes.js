@@ -5,6 +5,14 @@ const uri = process.env.DB_URI;
 let client;
 
 export default async function handler(req, res) {
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  
   if (!client) {
     client = new MongoClient(uri);
     await client.connect();
@@ -16,8 +24,6 @@ export default async function handler(req, res) {
 //     return
 //   }
 
-
-  
 
   const db = client.db('AnwesenheitDB');
   const profiles = db.collection('classes');
@@ -52,7 +58,4 @@ export default async function handler(req, res) {
 //     return res
 
 // }
-
-
-
 

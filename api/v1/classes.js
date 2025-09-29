@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
 
   const db = client.db('AnwesenheitDB');
-  const profiles = db.collection('profiles');
+  const profiles = db.collection('classes');
 
   if (req.method === 'GET') {
     const allProfiles = await profiles.find({}).toArray()
@@ -45,4 +45,5 @@ export default async function handler(req, res) {
 //     return res
 
 // }
+
 

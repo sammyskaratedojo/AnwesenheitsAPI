@@ -10,6 +10,13 @@ export default async function handler(req, res) {
     await client.connect();
   }
 
+//   if (req.body.authPW !== authPW)
+//   {
+//     res.status(401).end()
+//     return
+//   }
+
+
   
   if (req.method === 'GET') {
     res.status(200).json(getClasses())
@@ -24,15 +31,14 @@ async function getClasses()
     const db = client.db('AnwesenheitDB');
     const classes = db.collection('classes');
     let allClasses = await classes.find({}).toArray()
+    return allClasses
     let res = []
     allClasses.forEach(c => {
         res.push(c.name)
-        console.warn(c)
-        console.warn(c.name + " !")
+        console.log(c)
+        console.log(c.name + " !")
     })
 
     return res
 
 }
-
-

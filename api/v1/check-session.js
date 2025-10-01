@@ -22,27 +22,31 @@ export default async function handler(req, res) {
         await client.connect();
     }
 
-    //   if (req.body.authPW !== authPW)
-    //   {
-    //     res.status(401).end()
-    //     return
-    //   }
-
     const { date, className } = req.body;
-
 
     const db = client.db('AnwesenheitDB');
     const sessions = db.collection('sessions');
+    const profiles = db.collection('profiles');
 
-    const session = await sessions.find({"session_date": date, "class_name": className}).toArray()
+    const zwDb = client.db("AnwesenheitZwischenspeicher")
+    const zwSessions = zwDb.collection("sessions")
+    const zwProfiles = zwDb.collection("profiles")
 
-    if(session.length != 0)
+
+    const mainSession = await sessions.find({"session_date": date, "class_name": className}).toArray()
+    if(mainSession.length != 0)
     {
-        res.status(400).json({error: "Die Sitzung existiert bereits"})
+        res.status(400).json({errorCode: 1, error: "Die Sitzung existiert bereits in der Datenbank und kann nicht geändert werden."})
         return;
     }
-    else
+    
+    const zwSession = await zwSessions.find({"session_date": date, "class_name": className}).toArray()
+    if(zwSession.length != 0)
     {
-        res.status(200).json("ok")
+        res.status(400).json({errorCode: 2, error: "Die Sitzung wurde bereits erstellt, kann aber noch bearbeitet werden. Diese Sitzung bearbeiten?"})
+        return;
     }
+
+
+    res.status(200).json()
 }

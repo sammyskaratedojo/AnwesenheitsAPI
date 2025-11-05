@@ -5,11 +5,17 @@ let client;
 
 export default async function handler(req, res)
 {
+	  // --- CORS ---
 	res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    if (req.method === "OPTIONS") return res.sendStatus(200);
+	res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+	res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 	
+	if (req.method === "OPTIONS") {
+		res.status(200).end();
+		return;
+	}
+	
+	//
 	
 	if (!client) {
 		client = new MongoClient(DB_URI);
@@ -20,15 +26,14 @@ export default async function handler(req, res)
 	const db = client.db('AnwesenheitDB');
 	const classes = db.collection('classes');
 
-	if (req.method === 'GET') {
-		const allClasses = await classes.find({}).toArray()
-		let result = []
-		allClasses.forEach(c => {
-			result.push(c.name)
-		})
+	if (req.method !== 'GET') return res.status(405).end()
 
-		res.status(200).json(result)
-	} else {
-		res.status(405).end()
-	}
+
+	const allClasses = await classes.find({}).toArray()
+	let result = []
+	allClasses.forEach(c => {
+		result.push(c.name)
+	})
+
+	res.status(200).json(result)
 }

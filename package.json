@@ -1,15 +1,17 @@
 {
-  "name": "anwesenheits-api",
+  "name": "tempbackendenv",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
+  "main": "server.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.mjs"
   },
+  "type": "module",
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "mongodb": "^6.18.0"
+    "express": "^5.1.0",
+    "luxon": "^3.7.2",
+    "mongodb": "^6.20.0",
   }
 }

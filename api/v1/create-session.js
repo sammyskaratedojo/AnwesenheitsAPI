@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { DateTime } from "luxon";
 
-const DB_URI = process.env.DB_URI
+// const DB_URI = process.env.DB_URI
 const INIT_SESSION_MEMBERS = 5;
 let client;
 
@@ -30,6 +30,7 @@ export default async function handler(req, res)
     
     if (!client)
     {
+		const DB_URI = process.env.DB_URI
         client = new MongoClient(DB_URI);
         await client.connect();
         db = client.db('AnwesenheitDB');
@@ -54,7 +55,7 @@ async function createSession(className, sessionDate)
 		session_date: sessionDate,
 		members: [],
 		info: "",
-        creator: "",
+        creator: "Web App",
 	};
 
 	let allSessions = await sessions.find({ class_name: classId }).toArray();
@@ -87,7 +88,6 @@ async function createSession(className, sessionDate)
 
 
     newSession.members = activeMemberIds.map(id => ({ id: id, status: "Unbekannt" }));
-    console.log("failing class:", classId)
     const mainTrainerId = (await db.collection("classes").findOne({ _id: classId })).main_trainer;
     
     for(let member of newSession.members)

@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
-const DB_URI = process.env.DB_URI;
+// const DB_URI = process.env.DB_URI; 
+
 let client;
 
 export default async function handler(req, res)
@@ -17,7 +18,9 @@ export default async function handler(req, res)
 	
 	//
 	
+	
 	if (!client) {
+		const DB_URI = process.env.DB_URI
 		client = new MongoClient(DB_URI);
 		await client.connect();
 	}

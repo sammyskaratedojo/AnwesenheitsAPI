@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const DB_URI = process.env.DB_URI
+// const DB_URI = process.env.DB_URI
 let client;
 
 let zwDb;
@@ -27,6 +27,7 @@ export default async function handler(req, res) {
 
     
     if (!client) {
+		const DB_URI = process.env.DB_URI
 		client = new MongoClient(DB_URI);
 		await client.connect();
         db = client.db('AnwesenheitDB');
@@ -43,16 +44,20 @@ export default async function handler(req, res) {
     const { sessionClass, sessionDate, sessionInfo, members, creator } = req.body;
     const sessionId = await classIdFromName(sessionClass)
 
+    const newMembers = [
+        // { id, status }
+    ]
+
     for(let member of members)
     {
-        member.id = await nameToId(member.name);
+        newMembers.push({id: await nameToId(member.name), status: member.status})
     }
-
+    console.log(newMembers)
 
     const zwSessions = zwDb.collection("sessions");
     zwSessions.updateOne(
         { class_name: sessionId,  session_date: sessionDate },
-        { $set: { info: sessionInfo, members: members, creator: creator } }
+        { $set: { info: sessionInfo, members: newMembers, creator: creator } }
     );
 
 	res.status(200).end();

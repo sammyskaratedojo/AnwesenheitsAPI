@@ -1,9 +1,13 @@
 import { MongoClient } from 'mongodb';
 
-// const DB_URI = process.env.DB_URI;
+// const DB_URI = process.env.DB_URI
 let client;
 
+let db;
+let zwDb;
+
 export default async function handler(req, res) {
+	
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -12,25 +16,28 @@ export default async function handler(req, res) {
 		res.status(200).end();
 		return;
 	}
-
-
-	if (req.method !== 'GET') {
+	
+	
+	if (req.method !== 'POST') {
 		res.status(405).end()
 		return
 	}
-	
-	if (!client) {
+    
+    
+    if (!client) {
 		const DB_URI = process.env.DB_URI
 		client = new MongoClient(DB_URI);
 		await client.connect();
+        db = client.db('AnwesenheitDB');
+        zwDb = client.db('AnwesenheitZwischenspeicher');
 	}
 
-	const db = client.db('AnwesenheitDB');
-	const zwDb = client.db("AnwesenheitZwischenspeicher")
-	const profiles = db.collection('profiles');
-	const zwProfiles = zwDb.collection("profiles")
+	// const { profileName } = req.query
+    const { profileName } = req.body
+    console.log(profileName)
 
-	const allProfiles = await profiles.find({}).toArray()
-	const zwAllProfiles = await zwProfiles.find({}).toArray()
-	res.status(200).json(allProfiles.concat(zwAllProfiles))
+    const zwProfiles = zwDb.collection("profiles")
+    zwProfiles.insertOne({name: profileName, status: "ZW-Profil", firstdate: "--.--.----"})
+
+	res.status(201).end();
 }

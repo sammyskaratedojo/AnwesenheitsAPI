@@ -38,7 +38,6 @@ export default async function handler(req, res)
     const zwProfiles = zwDb.collection("profiles")
     const found = await profiles.find({name: name}).toArray() || await zwProfiles.find({name: name}).toArray()
 
-    console.log(found)
 
     if(found.length != 1)
         res.status(404).end()

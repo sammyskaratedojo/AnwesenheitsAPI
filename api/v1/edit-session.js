@@ -73,7 +73,7 @@ function nameToId(name) {
 
     if(profile) return profile._id
 
-    return null
+    throw new Error("Profilname " + name + " nicht gefunden.")
 }
 
 async function classIdFromName(name)

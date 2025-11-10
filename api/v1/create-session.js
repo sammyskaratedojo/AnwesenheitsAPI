@@ -63,6 +63,7 @@ async function createSession(className, sessionDate)
     for(let i of await zwSessions.find({ class_name: classId }).toArray())
     {
         allSessions.push(i);
+        console.log(i.members)
     }
 
 	const latestSessions = allSessions

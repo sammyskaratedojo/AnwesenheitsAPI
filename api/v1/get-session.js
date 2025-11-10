@@ -51,21 +51,26 @@ export default async function handler(req, res) {
 
 async function getSession(classId, sessionDate) {
     const zwSessions = zwDb.collection("sessions");
+    const classes = db.collection("classes")
 
     const session = await zwSessions.findOne({
         class_name: classId,
         session_date: sessionDate
     })
+    session.classWeekday = (await classes.findOne({_id: classId})).weekday
+    
     return await convertIdsToNames(session);
 }
 
 
 async function convertIdsToNames(session) {
+    console.log(session)
+
     if(!session) return null;
     for (let member of session.members) {
         member.name = await profileNameFromId(member.id);
-    }  
-    return session; //!!!!!!!!!!!!!\\
+    }
+    return session;
 }
 
 async function profileNameFromId(id) {
@@ -81,4 +86,3 @@ async function classIdFromName(name)
     const classId = await classes.findOne({"name": name})
     return classId ? classId._id : "Klasse nicht gefunden"
 }
-

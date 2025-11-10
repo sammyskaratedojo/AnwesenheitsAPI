@@ -71,7 +71,7 @@ async function convertIdsToNames(session) {
 async function profileNameFromId(id) {
     const profiles = db.collection("profiles");
     const zwProfiles = zwDb.collection("profiles");
-    const profile = await profiles.findOne({ _id: id }) || await zwProfiles.findOne({ id: id });
+    const profile = await profiles.findOne({ _id: id }) || await zwProfiles.findOne({ _id: id });
     return profile ? profile.name : "Profil nicht gefunden";
 }
 
@@ -81,3 +81,4 @@ async function classIdFromName(name)
     const classId = await classes.findOne({"name": name})
     return classId ? classId._id : "Klasse nicht gefunden"
 }
+

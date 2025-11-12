@@ -119,3 +119,6 @@ async function classIdFromName(name)
     const classId = await classes.findOne({"name": name})
     return classId ? classId._id : "Klasse nicht gefunden"
 }
+
+
+// ganz viel redundanz bzgl checken dass die session nicht schon existiert, etc

@@ -50,6 +50,7 @@ export default async function handler(req, res) {
 
     for(let member of members)
     {
+        console.log("mem name '" + member.name + "'")
         newMembers.push({id: await nameToId(member.name), status: member.status})
     }
     console.log(newMembers)

@@ -44,14 +44,14 @@ export default async function handler(req, res)
     const mainSession = await sessions.find({"session_date": date, "class_name": classId}).toArray()
     if(mainSession.length != 0)
     {
-        res.status(400).json({errorCode: 1})
+        res.status(200).json({errorCode: 1})
         return;
     }
     
     const zwSession = await zwSessions.find({"session_date": date, "class_name": classId}).toArray()
     if(zwSession.length != 0)
     {
-        res.status(400).json({errorCode: 2})
+        res.status(200).json({errorCode: 2})
         return;
     }
 

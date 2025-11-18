@@ -1,7 +1,6 @@
 import { MongoClient } from 'mongodb';
 import { DateTime } from "luxon";
 
-// const DB_URI = process.env.DB_URI
 const INIT_SESSION_MEMBERS = 5;
 let client;
 
@@ -63,7 +62,6 @@ async function createSession(className, sessionDate)
     for(let i of await zwSessions.find({ class_name: classId }).toArray())
     {
         allSessions.push(i);
-        console.log(i.members)
     }
 
 	const latestSessions = allSessions
@@ -98,7 +96,6 @@ async function createSession(className, sessionDate)
         member.status = "Trainer"
     }
 
-    console.log("creating", newSession)
     await zwSessions.insertOne(newSession)
 }
 

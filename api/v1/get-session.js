@@ -1,10 +1,9 @@
 import { MongoClient } from 'mongodb';
 
-// const DB_URI = process.env.DB_URI
 let client;
 
-let zwDb;
 let db;
+let zwDb;
 
 export default async function handler(req, res) {
 
@@ -34,7 +33,6 @@ export default async function handler(req, res) {
     
 
     const { sessionClass, sessionDate } = req.query;
-    console.log("incoming get-session Request:", sessionClass, sessionDate);
 	
     const sessionClassId = await classIdFromName(sessionClass)
     
@@ -64,7 +62,6 @@ async function getSession(classId, sessionDate) {
 
 
 async function convertIdsToNames(session) {
-    console.log(session)
 
     if(!session) return null;
     for (let member of session.members) {

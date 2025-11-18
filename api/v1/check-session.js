@@ -1,10 +1,9 @@
 import { MongoClient } from 'mongodb';
 
-// const DB_URI = process.env.DB_URI
 let client;
 
-let db
-let zwDb
+let db;
+let zwDb;
 
 export default async function handler(req, res)
 {
@@ -18,8 +17,8 @@ export default async function handler(req, res)
 	}
 
     
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "Only POST allowed!" });
+    if (req.method !== "GET") {
+        return res.status(405).json({ error: "Only GET allowed!" });
     }
 
     if (!client) {
@@ -33,10 +32,15 @@ export default async function handler(req, res)
     }
     
 
-    const { date, className } = req.body;
+    const { date, className } = req.query;
     const classId = await classIdFromName(className)
+    if(classId == null)
+    {
+        res.status(404).json({})
+        throw new Error("Class '" + className + "' not found.")
+    }
 
-    
+
     const sessions = db.collection('sessions');
     const zwSessions = zwDb.collection("sessions")
 
@@ -63,5 +67,5 @@ async function classIdFromName(name)
 {
     const classes = db.collection("classes")
     const classId = await classes.findOne({"name": name})
-    return classId ? classId._id : "Klasse nicht gefunden"
+    return classId ? classId._id : null
 }

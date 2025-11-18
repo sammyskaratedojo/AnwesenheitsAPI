@@ -1,7 +1,8 @@
 import { MongoClient } from 'mongodb';
 
-// const DB_URI = process.env.DB_URI;
 let client;
+let db;
+let zwDb;
 
 export default async function handler(req, res) {
 	res.setHeader("Access-Control-Allow-Origin", "*");
@@ -23,14 +24,14 @@ export default async function handler(req, res) {
 		const DB_URI = process.env.DB_URI
 		client = new MongoClient(DB_URI);
 		await client.connect();
+		db = client.db('AnwesenheitDB');
+		zwDb = client.db("AnwesenheitZwischenspeicher")
 	}
 
-	const db = client.db('AnwesenheitDB');
-	const zwDb = client.db("AnwesenheitZwischenspeicher")
 	const profiles = db.collection('profiles');
 	const zwProfiles = zwDb.collection("profiles")
 
 	const allProfiles = await profiles.find({}).toArray()
-	const zwAllProfiles = await zwProfiles.find({}).toArray()
-	res.status(200).json(allProfiles.concat(zwAllProfiles))
+	const allZwProfiles = await zwProfiles.find({}).toArray()
+	res.status(200).json(allProfiles.concat(allZwProfiles))
 }

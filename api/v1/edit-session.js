@@ -1,10 +1,9 @@
 import { MongoClient } from 'mongodb';
 
-// const DB_URI = process.env.DB_URI
 let client;
 
+let db;
 let zwDb;
-let db
 
 let allProfiles = [];
 let allZwProfiles = []
@@ -50,10 +49,8 @@ export default async function handler(req, res) {
 
     for(let member of members)
     {
-        console.log("mem name '" + member.name + "'")
         newMembers.push({id: await nameToId(member.name), status: member.status})
     }
-    console.log(newMembers)
 
     const zwSessions = zwDb.collection("sessions");
     zwSessions.updateOne(

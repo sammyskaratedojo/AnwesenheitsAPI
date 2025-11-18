@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
 
-// const DB_URI = process.env.DB_URI;
 let client;
 
 let db;
@@ -17,6 +16,11 @@ export default async function handler(req, res)
 		return;
 	}
     
+	if (req.method !== 'GET') {
+		res.status(405).end()
+		return
+	}
+	
 
 	if (!client) {
 		const DB_URI = process.env.DB_URI
@@ -26,23 +30,16 @@ export default async function handler(req, res)
         zwDb = client.db('AnwesenheitZwischenspeicher');
 	}
 
-	
-	if (req.method !== 'GET') {
-		res.status(405).end()
-		return
-	}
-
     const { name } = req.query
 
     const profiles = db.collection("profiles")
     const zwProfiles = zwDb.collection("profiles")
-    const found = await profiles.find({name: name}).toArray() || await zwProfiles.find({name: name}).toArray()
+    const found = await profiles.findOne({name: name}) || await zwProfiles.findOne({name: name})
 
+	console.log("found", found)
 
-    if(found.length != 1)
+    if(!found)
         res.status(404).end()
 
 	res.status(200).end(); // -> ok if profile does not exist
 }
-
-// zw Profiles findet er nicht

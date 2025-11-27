@@ -70,20 +70,16 @@ async function createSession(className, sessionDate)
             DateTime.fromFormat(b.session_date, "dd.MM.yyyy").toMillis() 
             - DateTime.fromFormat(a.session_date, "dd.MM.yyyy").toMillis()
         )
-        .slice(0, INIT_SESSION_MEMBERS);
 
 
     let activeMemberIds = []
-    for(let session of latestSessions)
+    for(let member of latestSessions[0].members) // the latest session
     {
-        for(let member of session.members)
-        {
-            if(member.status === "Unbekannt") continue;
-            if (isInList(member.id, activeMemberIds)) continue;
-            
-            activeMemberIds.push(member.id);
-        }
+        if (isInList(member.id, activeMemberIds)) continue;
+        
+        activeMemberIds.push(member.id);
     }
+    
 
 
     newSession.members = activeMemberIds.map(id => ({ id: id, status: "Unbekannt" }));

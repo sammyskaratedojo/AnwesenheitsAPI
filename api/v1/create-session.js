@@ -71,9 +71,10 @@ async function createSession(className, sessionDate)
             - DateTime.fromFormat(a.session_date, "dd.MM.yyyy").toMillis()
         )
 
+    
 
     let activeMemberIds = []
-    for(let member of latestSessions[0].members) // the latest session
+    for(let member of latestSessions[0].members) // 0 --> latest session
     {
         if (isInList(member.id, activeMemberIds)) continue;
         

@@ -4,6 +4,7 @@ const DB_URI = process.env.DB_URI;
 let client;
 
 let zwDb;
+let db;
 
 export default async function handler(req, res)
 {
@@ -28,6 +29,7 @@ export default async function handler(req, res)
         client = new MongoClient(DB_URI);
         await client.connect();
         zwDb = client.db('AnwesenheitZwischenspeicher');
+        db = client.db('AnwesenheitDB');
     }
 
     const sessions = zwDb.collection('sessions');

@@ -30,7 +30,7 @@ export default async function handler(req, res)
         zwDb = client.db('AnwesenheitZwischenspeicher');
     }
 
-    const sessions = db.collection('sessions');
+    const sessions = zwDb.collection('sessions');
     const allSessions = sessions.find({}).toArray()
 
     result = []
@@ -41,3 +41,4 @@ export default async function handler(req, res)
 
 	res.status(200).json(result)
 }
+

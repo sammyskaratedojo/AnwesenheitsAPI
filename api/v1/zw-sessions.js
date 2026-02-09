@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
 
-const DB_URI = process.env.DB_URI;
 let client;
 
 let zwDb;
@@ -26,6 +25,7 @@ export default async function handler(req, res)
     
     
     if (!client) {
+		const DB_URI = process.env.DB_URI
         client = new MongoClient(DB_URI);
         await client.connect();
         zwDb = client.db('AnwesenheitZwischenspeicher');
@@ -37,17 +37,22 @@ export default async function handler(req, res)
 
     const result = [];
     
-    await allSessions.forEach(async s => {
-		result.push({date: s.session_date, class: await classNameFromID(s.class_name)})
-	})
+    for (const s of allSessions) {
+        result.push({
+            date: s.session_date,
+            class_name: await classNameFromID(s.class_name)
+        })
+    }
 
+    console.log("final return", result)
 	res.status(200).json(result)
 }
 
 
-async function classNameFromID(id)
-{
-    const classes = db.collection("classes")
-    const target = await classes.findOne({"_id": id})
-    return target ? target.name : null
+async function classNameFromID(id) {
+  const classes = db.collection("classes")
+
+  const doc = await classes.findOne({ _id: id })
+  return doc?.name
 }
+

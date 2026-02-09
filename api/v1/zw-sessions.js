@@ -33,7 +33,7 @@ export default async function handler(req, res)
     const sessions = zwDb.collection('sessions');
     const allSessions = sessions.find({}).toArray()
 
-    result = []
+    const result = []
     
     allSessions.forEach(s => {
 		result.push({date: s.session_date, class: s.class_name})
@@ -41,4 +41,5 @@ export default async function handler(req, res)
 
 	res.status(200).json(result)
 }
+
 

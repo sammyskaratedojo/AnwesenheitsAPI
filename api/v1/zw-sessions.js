@@ -35,9 +35,17 @@ export default async function handler(req, res)
 
     const result = [];
     
-    allSessions.forEach(s => {
-		result.push({date: s.session_date, class: s.class_name})
+    allSessions.forEach(async s => {
+		result.push({date: s.session_date, class: await classNameFromID(s.class_name)})
 	})
 
 	res.status(200).json(result)
+}
+
+
+async function classNameFromID(id)
+{
+    const classes = db.collection("classes")
+    const target = await classes.findOne({"_id": id})
+    return target ? target.name : null
 }

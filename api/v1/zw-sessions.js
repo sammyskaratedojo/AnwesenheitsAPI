@@ -37,7 +37,7 @@ export default async function handler(req, res)
 
     const result = [];
     
-    allSessions.forEach(async s => {
+    await allSessions.forEach(async s => {
 		result.push({date: s.session_date, class: await classNameFromID(s.class_name)})
 	})
 

@@ -19,7 +19,6 @@ export default async function handler(req, res)
 		return;
 	}
 
-    //   \\
     
     if(req.method !== "POST")
     {
@@ -44,10 +43,10 @@ export default async function handler(req, res)
 
 async function createSession(className, sessionDate)
 {
-	const sessions = db.collection("sessions");
 	const zwSessions = zwDb.collection("sessions");
 
-    const classId = await classIdFromName(className) 
+    const classId = await classIdFromName(className)
+    const classes = db.collection("classes")
 
 	const newSession = {
 		class_name: classId,
@@ -57,41 +56,8 @@ async function createSession(className, sessionDate)
         creator: "Web App",
 	};
 
-	let allSessions = await sessions.find({ class_name: classId }).toArray();
-    
-    for(let i of await zwSessions.find({ class_name: classId }).toArray())
-    {
-        allSessions.push(i);
-    }
-
-	const latestSessions = allSessions
-        .filter(s => s.session_date) // falls es leere Einträge gibt
-        .sort((a, b) => 
-            DateTime.fromFormat(b.session_date, "dd.MM.yyyy").toMillis() 
-            - DateTime.fromFormat(a.session_date, "dd.MM.yyyy").toMillis()
-        )
-
-    
-
-    let activeMemberIds = []
-    for(let member of latestSessions[0].members) // 0 --> latest session
-    {
-        if (isInList(member.id, activeMemberIds)) continue;
-        
-        activeMemberIds.push(member.id);
-    }
-    
-
-
-    newSession.members = activeMemberIds.map(id => ({ id: id, status: "Unbekannt" }));
-    const mainTrainerId = (await db.collection("classes").findOne({ _id: classId })).main_trainer;
-    
-    for(let member of newSession.members)
-    {
-        if(member.id.toString() !== mainTrainerId.toString()) continue
-        
-        member.status = "Trainer"
-    }
+    const defaultMembers = (await classes.findOne({"_id": classId})).members
+    newSession.members = defaultMembers
 
     await zwSessions.insertOne(newSession)
 }

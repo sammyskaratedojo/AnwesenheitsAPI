@@ -44,12 +44,11 @@ export default async function handler(req, res) {
     );
 
 
-    res.status(200).json({className, profileName, profileID});
+    res.status(200).send(className + ", " +  profileName + ", " + profileID);
 }
 
 async function profileIDFromName(name) {
     const profiles = db.collection("profiles");
-    const zwProfiles = zwDb.collection("profiles");
-    const profile = await profiles.findOne({ name: name }) || await zwProfiles.findOne({ name: name });
+    const profile = await profiles.findOne({ name: name })
     return profile ? profile._id : "Profil nicht gefunden";
 }

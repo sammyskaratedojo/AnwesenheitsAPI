@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
     const profileID = await profileIDFromName(profileName)
 
-    await collection.updateOne(
+    await classes.updateOne(
     { name: className },
     { $push: { members: {id: profileID, status: "Unbekannt"} } }
     );
